@@ -43,7 +43,7 @@ class Server():
 
 	def process(self):
 
-		if(self.data.strip("\r\n") == "heartbeat"):
+		if(self.data.strip("\r\n") == "update"):
 			msg = self.gamecontroller.get_game_data()
 			print("[+] Sending game data...")
 			self.client.sendall(msg)

@@ -13,6 +13,8 @@ class Client():
 
 		self.data = None
 
+		self.current_state = None
+
 	def connect(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,14 +36,14 @@ class Client():
 		except Exception as e:
 			print("[!] Error receiving data from server: " + str(e))
 
-	def getdata(self):
+	def get_state(self):
 
-		return self.data
+		return self.current_state
 
 	def process(self):
 		#Process and send new board layout to LEDs
-		print(self.data)
-		return 0
+		self.current_state = [int(x) for x in self.data]
+		print(self.current_state)
 
 	def close(self):
 		self.connection.close()
