@@ -18,6 +18,7 @@ def run_controller(gamecontroller, m_game):
 def main():
 	# Initialize a game controller (every device needs one in case it becomes the server).
 	gamecontroller = controller.Controller()
+	game = []
 
 	# Initial state doesn't exist until first server is selected.
 	current_state = None
@@ -48,6 +49,11 @@ def main():
 				game = current_state
 
 			# Initialize the board state the first time only.
+			elif (len(sys.argv) > 3 and sys.argv[2] == "-s"):
+				seedfile = open(sys.argv[3], 'r')
+				for line in seedfile:
+					for char in line.strip("\r\n"):
+						game.append(int(char))
 			else:
 				game = gamecontroller.init_mat()
 
