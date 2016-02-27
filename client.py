@@ -53,6 +53,15 @@ class Client():
 		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
 		self.gamecontroller.n_win.refresh()
 
+	def pick_section(self):
+
+		#Pick section
+		return 0
+
+	def update_lights(self):
+		#Code to update the lights.
+		return 0
+
 	def close(self):
 		self.connection.close()
 		return 0
