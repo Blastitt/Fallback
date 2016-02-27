@@ -45,6 +45,15 @@ class Client():
 		self.current_state = [int(x) for x in self.data]
 		print(self.current_state)
 
+	def pick_section(self):
+
+		#Pick section
+		return 0
+
+	def update_lights(self):
+		#Code to update the lights.
+		return 0
+
 	def close(self):
 		self.connection.close()
 		return 0

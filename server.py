@@ -16,8 +16,12 @@ class Server():
 		self.clientaddr = None
 
 		self.data = None
+		self.update_msg = None
 
 		self.gamecontroller = gamecontroller
+		self.lights = visuals.Lights('./iplist.conf', 0)
+
+		self.subsection = None
 
 	def start(self):
 		try:
@@ -44,10 +48,18 @@ class Server():
 	def process(self):
 
 		if(self.data.strip("\r\n") == "update"):
-			msg = self.gamecontroller.get_game_data()
+			self.update_msg = self.gamecontroller.get_game_data()
 			print("[+] Sending game data...")
-			self.client.sendall(msg)
+			self.client.sendall(self.update_msg)
 			self.client.close()
+
+	def pick_section(self):
+
+		self.subsection = #self.lights.pick_quadrant(MY IP, self.update_msg)
+
+	def update_lights(self):
+		
+		self.lights.update(self.subsection[0], self.subsection[1])
 
 
 def main():
