@@ -55,7 +55,8 @@ class Server():
 
 	def pick_section(self):
 
-		self.subsection = #self.lights.pick_quadrant(MY IP, self.update_msg)
+		#self.subsection = self.lights.pick_quadrant(MY IP, self.update_msg)
+		return 0
 
 	def update_lights(self):
 		
