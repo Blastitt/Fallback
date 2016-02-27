@@ -74,25 +74,25 @@ def calc_grid(matrix, width, height):
 			matrix[i] = 0
 
 	return matrix
+def main():
+	# init curses
+	stdscr = curses.initscr()
+	curses.noecho()
+	curses.cbreak()
+	stdscr.keypad(1)
+	n_win = curses.newwin(50, 50, 0, 0)
 
-# init curses
-stdscr = curses.initscr()
-curses.noecho()
-curses.cbreak()
-stdscr.keypad(1)
-n_win = curses.newwin(50, 50, 0, 0)
+	m_game = init_mat(mat_game, width, height)
+	while(True):
+		m_game = calc_grid(m_game, width, height)
+		draw_grid(n_win, m_game, width, height)
+		time.sleep(0.1)
 
-m_game = init_mat(mat_game, width, height)
-while(True):
-	m_game = calc_grid(m_game, width, height)
-	draw_grid(n_win, m_game, width, height)
-	time.sleep(0.1)
+	# end curses
+	curses.nocbreak()
+	stdscr.keypad(0)
+	curses.echo()
+	curses.endwin()
 
-# end curses
-curses.nocbreak()
-stdscr.keypad(0)
-curses.echo()
-curses.endwin()
-
-if __name == '__main__':
+if __name__ == '__main__':
 	main()

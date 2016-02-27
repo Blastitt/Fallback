@@ -46,7 +46,7 @@ class Server():
 
 
 def main():
-	server = Server('0.0.0.0', 8000)
+	server = Server('', 8000)
 
 	server.start()
 
