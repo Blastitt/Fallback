@@ -5,76 +5,89 @@ import curses
 import time
 from datetime import datetime
 
-stdscr = 0
-n_win = 0
-width = 16
-height = 16
-mat_game = []
+class Controller:
 
-# create 1D array containing game cells
-def init_mat(matrix, width, height):
-	matrix = [(1 if rand.randint(0, 100) < 15 else 0) for x in range(width * height)]
-	return matrix
-	
-def draw_grid(n_win, matrix, width, height):
-	count = 0
-	n_win.clear()
-	for i in matrix:
-		count += 1
-		n_win.addch(' ')
-		n_win.addch('x' if i == 1 else ' ')
-		n_win.addch(' ')
-		if count % height == 0:
-			n_win.addch('\n')
-	n_win.refresh()
-		
-def calc_grid(matrix, width, height):
+	def __init__(self, width = 16, height = 16):
+		self.stdscr = None
+		self.n_win = None
+		self.game_width = width
+		self.game_height = height
+		self.game_matrix = []
 
-	for i in range(width * height):
+	# create 1D array containing game cells
+	def init_mat(self, width = None, height = None):
+		width = self.game_width if width == None else width
+		height = self.game_height if height == None else height
+		matrix = [(1 if rand.randint(0, 100) < 15 else 0) for x in range(self.game_width * height)]
+		return matrix
 		
-		n_cells = 0
+	def draw_grid(self, n_win, matrix, width = None, height = None):
+		width = self.game_width if width == None else width
+		height = self.game_height if height == None else height
 		
-		# check top neighbor
-		if int(i / height) > 0:
-			if matrix[int(((i / height - 1) * height) + (i % height))] == 1:
-				n_cells += 1
+		count = 0
+		n_win.clear()
+		for i in matrix:
+			count += 1
+			n_win.addch(' ')
+			n_win.addch('x' if i == 1 else ' ')
+			n_win.addch(' ')
+			if count % height == 0:
+				n_win.addch('\n')
+		n_win.refresh()
 			
-			# check top left neighbor
-			if int(i % height) > 0 and matrix[int(((i / height - 1) * height) + ((i % height) - 1))] == 1:
-				n_cells += 1	
-			# check top right neighbor
-			if int(i % height) < width - 1 and matrix[int(((i / height - 1) * height) + ((i % height) + 1))] == 1:
-				n_cells += 1
-						
-		# check bottom neighbor
-		if int(i / height) < width - 1:
-			if matrix[int(((i / height + 1) * height) + (i % height))] == 1:
-				n_cells += 1
+	def calc_grid(self, matrix, width = None, height = None):
+
+		width = self.game_width if width == None else width
+		height = self.game_height if height == None else height
+
+		for i in range(width * height):
 			
-			# check bottom left neighbor
-			if int(i % height) > 0 and matrix[int(((i / height + 1) * height) + ((i % height) - 1))] == 1:
-				n_cells += 1			
-			# check bottom right neighbor
-			if int(i % height) < height - 1 and matrix[int(((i / height + 1) * height) + ((i % height) + 1))] == 1:
-				n_cells += 1
+			n_cells = 0
+			
+			# check top neighbor
+			if int(i / height) > 0:
+				if matrix[int(((i / height - 1) * height) + (i % height))] == 1:
+					n_cells += 1
+				
+				# check top left neighbor
+				if int(i % height) > 0 and matrix[int(((i / height - 1) * height) + ((i % height) - 1))] == 1:
+					n_cells += 1	
+				# check top right neighbor
+				if int(i % height) < width - 1 and matrix[int(((i / height - 1) * height) + ((i % height) + 1))] == 1:
+					n_cells += 1
+							
+			# check bottom neighbor
+			if int(i / height) < width - 1:
+				if matrix[int(((i / height + 1) * height) + (i % height))] == 1:
+					n_cells += 1
+				
+				# check bottom left neighbor
+				if int(i % height) > 0 and matrix[int(((i / height + 1) * height) + ((i % height) - 1))] == 1:
+					n_cells += 1			
+				# check bottom right neighbor
+				if int(i % height) < height - 1 and matrix[int(((i / height + 1) * height) + ((i % height) + 1))] == 1:
+					n_cells += 1
 
-		# check left neighbor
-		if int(i % height) > 0:
-			if matrix[int((i / height * height) + ((i % height) - 1))] == 1:
-				n_cells += 1	
-		# check right neighbor
-		if int(i % height) < height - 1:
-			if matrix[int((i / height * height) + ((i % height) + 1))] == 1:
-				n_cells += 1
+			# check left neighbor
+			if int(i % height) > 0:
+				if matrix[int((i / height * height) + ((i % height) - 1))] == 1:
+					n_cells += 1	
+			# check right neighbor
+			if int(i % height) < height - 1:
+				if matrix[int((i / height * height) + ((i % height) + 1))] == 1:
+					n_cells += 1
 
 
-		if matrix[i] == 0 and n_cells == 3:
-			matrix[i] = 1
-		if n_cells < 2 or n_cells > 3:
-			matrix[i] = 0
+			if matrix[i] == 0 and n_cells == 3:
+				matrix[i] = 1
+			if n_cells < 2 or n_cells > 3:
+				matrix[i] = 0
 
-	return matrix
+		return matrix
+
 def main():
+	
 	# init curses
 	stdscr = curses.initscr()
 	curses.noecho()
@@ -82,10 +95,11 @@ def main():
 	stdscr.keypad(1)
 	n_win = curses.newwin(50, 50, 0, 0)
 
-	m_game = init_mat(mat_game, width, height)
+	controller = Controller(16, 16)
+	m_game = controller.init_mat()
 	while(True):
-		m_game = calc_grid(m_game, width, height)
-		draw_grid(n_win, m_game, width, height)
+		m_game = controller.calc_grid(m_game)
+		controller.draw_grid(n_win, m_game)
 		time.sleep(0.1)
 
 	# end curses
