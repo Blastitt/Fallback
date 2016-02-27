@@ -6,10 +6,9 @@ import ws2812
 
 class Client():
 
-	def __init__(self, serverhost, serverport):
+	def __init__(self, server):
 
-		self.serverhost = serverhost
-		self.serverport = serverport
+		self.server = server
 		self.connection = None
 
 		self.data = None
@@ -17,9 +16,11 @@ class Client():
 	def connect(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.connection.connect((self.serverhost, self.serverport))
+			self.connection.connect(self.server)
+			return 1
 		except Exception as e:
 			print("[!] Error connecting to server: " + str(e))
+			raise e
 
 	def send(self, message):
 		try:
@@ -39,6 +40,7 @@ class Client():
 
 	def process(self):
 		#Process and send new board layout to LEDs
+		print(self.data)
 		return 0
 
 	def close(self):
@@ -47,7 +49,7 @@ class Client():
 
 def main():
 
-	client = Client('0.0.0.0', 8000)
+	client = Client(('0.0.0.0', 8000))
 
 	while(True):
 		# Connect to server, send request for updated board,
