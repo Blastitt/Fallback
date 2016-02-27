@@ -3,6 +3,7 @@
 import socket
 import controller
 import threading
+import visuals
 
 class Server():
 
@@ -20,7 +21,7 @@ class Server():
 
 		self.gamecontroller = gamecontroller
 		
-		self.lights = visuals.Lights('./iplist.conf', 0)
+		self.lights = visuals.Lights(0)
 
 		self.subsection = None
 
@@ -54,14 +55,9 @@ class Server():
 			self.client.sendall(self.update_msg)
 			self.client.close()
 
-	def pick_section(self):
-
-		#self.subsection = self.lights.pick_quadrant(MY IP, self.update_msg)
-		return 0
-
 	def update_lights(self):
 		
-		self.lights.update(self.subsection[0], self.subsection[1])
+		self.lights.update(self.gamecontroller.get_partial_grid())
 
 
 def main():

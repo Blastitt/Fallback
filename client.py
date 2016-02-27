@@ -2,7 +2,7 @@
 
 import socket
 import time
-import ws2812
+import visuals
 
 class Client():
 
@@ -14,6 +14,8 @@ class Client():
 		self.data = None
 		self.gamecontroller = None
 		self.current_state = None
+
+		self.lights = visuals.Lights(0)
 		
 	def connect(self):
 		try:
@@ -53,14 +55,9 @@ class Client():
 		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
 		self.gamecontroller.n_win.refresh()
 
-	def pick_section(self):
-
-		#Pick section
-		return 0
-
 	def update_lights(self):
-		#Code to update the lights.
-		return 0
+		
+		self.lights.update(self.gamecontroller.get_partial_grid())
 
 	def close(self):
 		self.connection.close()
