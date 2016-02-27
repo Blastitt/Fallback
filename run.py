@@ -6,6 +6,7 @@ import fallback
 import random
 import time
 import thread
+import sys
 
 # Run in a separate thread. Updates the board @ 10Hz.
 def run_controller(gamecontroller, m_game):
@@ -17,12 +18,22 @@ def run_controller(gamecontroller, m_game):
 def main():
 	# Initialize a game controller (every device needs one in case it becomes the server).
 	gamecontroller = controller.Controller()
+
 	# Initial state doesn't exist until first server is selected.
 	current_state = None
-	
 
 	device = fallback.Device('./iplist.conf', gamecontroller)
 
+	disp_opt = gamecontroller.DISPLAY_ALL
+	if len(sys.argv) > 1:	
+		if sys.argv[1] == "--tl":
+			disp_opt = gamecontroller.DISPLAY_TL
+		if sys.argv[1] == "--tr":
+			disp_opt = gamecontroller.DISPLAY_TR
+		if sys.argv[1] == "--bl":
+			disp_opt = gamecontroller.DISPLAY_BL
+		if sys.argv[1] == "--br":
+			disp_opt = gamecontroller.DISPLAY_BR
 
 	while(True):
 		# To minimize the possibility of more than one device becoming the server when it goes down.
@@ -49,6 +60,9 @@ def main():
 		else:
 			# Device's remote_server is set when it finds a server while searching above.
 			myclient = client.Client(device.get_remote_server())
+			myclient.set_game_controller(gamecontroller)
+			myclient.gamecontroller.set_display_mode(disp_opt)
+			
 			server_online = True
 
 			while(server_online):
@@ -66,6 +80,8 @@ def main():
 				myclient.close()
 				# Do this loop @ 10Hz.
 				time.sleep(0.1)
+
+			myclient.gamecontroller.end_curses()
 
 if __name__ == '__main__':
 	main()

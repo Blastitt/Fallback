@@ -87,10 +87,12 @@ class Controller:
 		return matrix
 
 
-	def draw_grid(self, n_win, matrix, width = None, height = None):
+	def draw_grid(self, n_win = None, matrix = None, width = None, height = None):
 		width = self.get_partial_game_width() if width == None else width
 		height = self.get_partial_game_height() if height == None else height
-		
+		n_win = self.n_win if n_win == None else n_win
+		matrix = self.game_matrix if matrix == None else matrix
+
 		count = 0
 		n_win.clear()
 		for i in matrix:
@@ -157,18 +159,25 @@ class Controller:
 			game_data += str(i)
 		return game_data
 
+	def init_curses(self):
+		self.stdscr = curses.initscr()
+		curses.noecho()
+		curses.cbreak()
+		self.stdscr.keypad(1)
+		self.n_win = curses.newwin(50, 50, 0, 0)
+
+	def end_curses(self):
+		curses.nocbreak()
+		self.stdscr.keypad(0)
+		curses.echo()
+		curses.endwin()
 
 def main():
 	
-	# init curses
-	stdscr = curses.initscr()
-	curses.noecho()
-	curses.cbreak()
-	stdscr.keypad(1)
-	n_win = curses.newwin(50, 50, 0, 0)
-
 	controller = Controller(16, 16)
 	m_game = controller.init_mat()
+	
+	controller.init_curses()
 
 	disp_opt = controller.DISPLAY_ALL	
 	if len(sys.argv) > 1:
@@ -188,11 +197,7 @@ def main():
 		controller.draw_grid(n_win, controller.get_partial_grid(m_game))
 		time.sleep(0.1)
 
-	# end curses
-	curses.nocbreak()
-	stdscr.keypad(0)
-	curses.echo()
-	curses.endwin()
+	controller.end_curses()
 
 if __name__ == '__main__':
 	main()

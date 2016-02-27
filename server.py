@@ -18,7 +18,7 @@ class Server():
 		self.data = None
 
 		self.gamecontroller = gamecontroller
-
+		
 	def start(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
