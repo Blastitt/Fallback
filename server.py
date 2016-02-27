@@ -52,6 +52,7 @@ class Server():
 		if(self.data.strip("\r\n") == "update"):
 			self.update_msg = self.gamecontroller.get_game_data()
 			print("[+] Sending game data...")
+			print("[+] Current grid position: ", self.gamecontroller.get_grid_position())
 			self.client.sendall(self.update_msg)
 			self.client.close()
 

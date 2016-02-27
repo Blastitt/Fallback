@@ -51,6 +51,8 @@ def main():
 			else:
 				game = gamecontroller.init_mat()
 
+			gamecontroller.set_display_mode(disp_opt)
+
 			# Start updating the board @ 10Hz. (Threaded because it's blocking.)
 			thread.start_new_thread(run_controller, (gamecontroller, game))
 

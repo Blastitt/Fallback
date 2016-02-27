@@ -41,6 +41,18 @@ class Controller:
 	def get_display_mode(self):
 		return self.display_mode
 
+	def get_grid_position(self, disp_mode = None):
+		disp_mode = self.display_mode if disp_mode == None else disp_mode
+		if disp_mode == self.DISPLAY_TL:
+			return "TL"
+		if disp_mode == self.DISPLAY_TR:
+			return "TR"
+		if disp_mode == self.DISPLAY_BL:
+			return "BL"
+		if disp_mode == self.DISPLAY_BR:
+			return "BR"
+		return "ALL"
+	
 	def get_partial_game_width(self):
 		if self.display_mode != self.DISPLAY_ALL:
 			return self.game_width / 2
