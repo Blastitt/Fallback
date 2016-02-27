@@ -21,6 +21,9 @@ class Controller:
 		matrix = [(1 if rand.randint(0, 100) < 15 else 0) for x in range(self.game_width * height)]
 		return matrix
 		
+	def set_game_matrix(self, matrix):
+		self.game_matrix = matrix
+
 	def draw_grid(self, n_win, matrix, width = None, height = None):
 		width = self.game_width if width == None else width
 		height = self.game_height if height == None else height
@@ -37,7 +40,6 @@ class Controller:
 		n_win.refresh()
 			
 	def calc_grid(self, matrix, width = None, height = None):
-
 		width = self.game_width if width == None else width
 		height = self.game_height if height == None else height
 
@@ -86,6 +88,13 @@ class Controller:
 
 		return matrix
 
+	def get_game_data(self):
+		game_data = ""
+		for i in self.game_matrix:
+			game_data += str(i)
+		print game_data
+
+
 def main():
 	
 	# init curses
@@ -99,6 +108,7 @@ def main():
 	m_game = controller.init_mat()
 	while(True):
 		m_game = controller.calc_grid(m_game)
+		controller.set_game_matrix(m_game)
 		controller.draw_grid(n_win, m_game)
 		time.sleep(0.1)
 
