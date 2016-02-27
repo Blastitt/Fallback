@@ -19,6 +19,7 @@ class Server():
 		self.update_msg = None
 
 		self.gamecontroller = gamecontroller
+		
 		self.lights = visuals.Lights('./iplist.conf', 0)
 
 		self.subsection = None

@@ -12,9 +12,9 @@ class Client():
 		self.connection = None
 
 		self.data = None
-
+		self.gamecontroller = None
 		self.current_state = None
-
+		
 	def connect(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,6 +23,10 @@ class Client():
 		except Exception as e:
 			print("[!] Error connecting to server: " + str(e))
 			raise e
+
+	def set_game_controller(self, controller):
+		self.gamecontroller = controller
+		self.gamecontroller.init_curses()
 
 	def send(self, message):
 		try:
@@ -43,7 +47,11 @@ class Client():
 	def process(self):
 		#Process and send new board layout to LEDs
 		self.current_state = [int(x) for x in self.data]
-		print(self.current_state)
+		
+		self.gamecontroller.set_game_matrix(self.current_state)
+		self.gamecontroller.n_win.clear()
+		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
+		self.gamecontroller.n_win.refresh()
 
 	def pick_section(self):
 
