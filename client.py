@@ -40,6 +40,7 @@ class Client():
 
 	def process(self):
 		#Process and send new board layout to LEDs
+		print(self.data)
 		return 0
 
 	def close(self):

@@ -6,10 +6,11 @@ import controller
 
 class Device():
 
-	def __init__(self, ipfile):
+	def __init__(self, ipfile, gamecontroller):
 
 		self.ipfile = open(ipfile, 'r')
 		self.iplist = []
+		self.gamecontroller = gamecontroller
 
 		self.is_server= False
 
@@ -46,7 +47,7 @@ class Device():
 
 		print("[!] No server found - Becoming Server!")
 
-		self.server = server.Server('', 8000)
+		self.server = server.Server('', 8000, self.gamecontroller)
 		self.is_server = True
 
 		self.server.start()

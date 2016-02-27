@@ -2,10 +2,11 @@
 
 import socket
 import controller
+import threading
 
 class Server():
 
-	def __init__(self, host, port):
+	def __init__(self, host, port, gamecontroller):
 
 		self.host = host
 		self.port = port
@@ -16,12 +17,16 @@ class Server():
 
 		self.data = None
 
+		self.gamecontroller = gamecontroller
+
 	def start(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			self.connection.bind((self.host, self.port))
 			self.connection.listen(5)
+
+
 		except Exception as e:
 			print("[!] Error starting server: " + str(e))
 
@@ -39,7 +44,7 @@ class Server():
 	def process(self):
 
 		if(self.data.strip("\r\n") == "heartbeat"):
-			msg = controller.get_game_data()
+			msg = self.gamecontroller.get_game_data()
 			print("[+] Sending game data...")
 			self.client.sendall(msg)
 			self.client.close()

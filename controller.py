@@ -92,7 +92,7 @@ class Controller:
 		game_data = ""
 		for i in self.game_matrix:
 			game_data += str(i)
-		print game_data
+		return game_data
 
 
 def main():
