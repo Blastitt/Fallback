@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import socket
+import controller
 
 class Server():
 
@@ -28,19 +29,18 @@ class Server():
 		self.connection.close()
 
 	def recv(self):
-		#try:
-		self.client, self.clientaddr = self.connection.accept()
-		print("[+] Connection received from " + str(self.clientaddr))
-		self.data = self.client.recv(2048)
-		print(self.data)
-		#except Exception as e:
-			#print("[!] Error receiving from client: " + str(e))
+		try:
+			self.client, self.clientaddr = self.connection.accept()
+			print("[+] Connection received from " + str(self.clientaddr))
+			self.data = self.client.recv(2048)
+		except Exception as e:
+			print("[!] Error receiving from client: " + str(e))
 
 	def process(self):
 
 		if(self.data.strip("\r\n") == "heartbeat"):
-			msg = "heartbeat received"
-			print("[+] Sending message...")
+			msg = controller.get_game_data()
+			print("[+] Sending game data...")
 			self.client.sendall(msg)
 			self.client.close()
 
