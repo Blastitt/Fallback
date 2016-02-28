@@ -50,16 +50,20 @@ class Client():
 
 	def process(self):
 		#Process and send new board layout to LEDs
-		self.current_state = [int(x) for x in self.data]
+		#self.color = int(self.data[:8])
+		self.current_state = [int(x) for x in self.data[8:]]
 		
 		self.gamecontroller.set_game_matrix(self.current_state)
 		self.gamecontroller.n_win.clear()
 		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
 		self.gamecontroller.n_win.refresh()
-		#self.update_lights()
+		self.update_lights()
 
-	def update_lights(self):	
-		self.lights.update(self.gamecontroller.get_partial_grid())
+	def update_lights(self):
+		# read /tmp/fallback.pid. if it has a p_id, check if p active
+		# if p not active replace with own, if active, keep trying
+		print ""
+		# self.lights.update(self.gamecontroller.get_partial_grid())
 
 	def close(self):
 		self.connection.close()

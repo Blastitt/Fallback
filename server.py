@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import os
 import socket
 import controller
 import threading
@@ -60,7 +61,22 @@ class Server():
 			self.update_lights()
 
 	def update_lights(self):
-		self.lights.update(self.gamecontroller.get_partial_grid())
+		# read /tmp/fallback.pid. if it has a p_id, check if p active
+		# if p not active replace with own, if active, keep trying
+		try:
+			busy = False
+			f = open("/tmp/fallback.pid", "w+")
+			if file.readline() != "":
+				busy = True
+
+			if busy:
+				sleep(0.5)
+				self.update_lights()
+			else:
+				f.write(str(os.getpid()))
+				self.lights.update(self.gamecontroller.get_partial_grid())
+		except IOError as err:
+			print ("err")
 
 
 def main():
