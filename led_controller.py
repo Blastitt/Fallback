@@ -70,8 +70,14 @@ class Led:
 		offset = 0
 		color = self.DOT_COLORS[0]
 		for i in range(len(matrix)):
+			#i is the led number; not matrix number
 			# Set the LED color buffer value.
-			if matrix[i] == 1:
+			#i/8%2==1
+			if (i / 8) % 2 == 1:
+				matrix_val = matrix[8 - (i % 8) + (i / 8)]
+			else:
+				matrix_val = matrix[i]
+			if matrix_val == 1:
 				ws.ws2811_led_set(self.channel, i, color)
 			else:
 				ws.ws2811_led_set(self.channel, i, 0x000000)
