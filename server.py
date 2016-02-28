@@ -4,6 +4,7 @@ import socket
 import controller
 import threading
 import visuals
+import led_controller
 
 class Server():
 
@@ -20,7 +21,8 @@ class Server():
 		self.update_msg = None
 
 		self.gamecontroller = gamecontroller
-		
+	
+		self.leds = led_controller.Led()	
 		self.lights = visuals.Lights(0)
 
 		self.subsection = None
@@ -55,10 +57,11 @@ class Server():
 			print("[+] Current grid position: ", self.gamecontroller.get_grid_position())
 			self.client.sendall(self.update_msg)
 			self.client.close()
+			self.update_lights()
 
 	def update_lights(self):
-		
-		self.lights.update(self.gamecontroller.get_partial_grid())
+		self.leds.do_light(self.gamecontroller.get_partial_grid())	
+	#	self.lights.update(self.gamecontroller.get_partial_grid())
 
 
 def main():
