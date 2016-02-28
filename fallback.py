@@ -30,7 +30,8 @@ class Device():
 
 		for ip in self.iplist:
 			host = ip.split(':')[0]
-			port = int(ip.split(':')[1])
+			#port = int(ip.split(':')[1])
+			port = 8000
 
 			myclient = client.Client((host, port))
 
