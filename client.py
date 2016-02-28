@@ -65,7 +65,7 @@ class Client():
 	def update_lights(self):
 		# read /tmp/fallback.pid. if it has a p_id, check if p active
 		# if p not active replace with own, if active, keep trying
-		self.lights.change_color(self.gamecontroller.get_color())
+		#self.lights.change_color(self.gamecontroller.get_color())
 		self.lights.update(self.gamecontroller.get_partial_grid())
 		return 0
 
