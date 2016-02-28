@@ -34,7 +34,7 @@ class Controller:
 	def init_mat(self, width = None, height = None):
 		width = self.game_width if width == None else width
 		height = self.game_height if height == None else height
-		matrix = [(1 if rand.randint(0, 100) < 30 else 0) for x in range(self.game_width * height)]
+		matrix = [(1 if rand.randint(0, 100) < 65 else 0) for x in range(self.game_width * height)]
 		return matrix
 
 	def set_display_mode(self, disp_mode):
