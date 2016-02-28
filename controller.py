@@ -16,6 +16,10 @@ class Controller:
 		self.game_height = height
 		self.game_matrix = []
 
+		self.red = 0
+		self.green = 0
+		self.blue = 0
+
 
 		# init display constants
 		self.DISPLAY_TL = 1
@@ -32,12 +36,17 @@ class Controller:
 		height = self.game_height if height == None else height
 		matrix = [(1 if rand.randint(0, 100) < 30 else 0) for x in range(self.game_width * height)]
 		return matrix
-		
+
 	def set_display_mode(self, disp_mode):
 		self.display_mode = disp_mode
 
 	def set_game_matrix(self, matrix):
 		self.game_matrix = matrix
+
+	def set_colors(self, color_str):
+		self.red = int(color_str[:4], 16)
+		self.green = int(color_str[4:8], 16)
+		self.blue = int(color_str[8:12], 16)
 
 	def get_display_mode(self):
 		return self.display_mode
@@ -53,12 +62,12 @@ class Controller:
 		if disp_mode == self.DISPLAY_BR:
 			return "BR"
 		return "ALL"
-	
+
 	def get_partial_game_width(self):
 		if self.display_mode != self.DISPLAY_ALL:
 			return self.game_width / 2
 		return self.game_width
-	
+
 	def get_partial_game_height(self):
 		if self.display_mode != self.DISPLAY_ALL:
 			return self.game_height / 2
@@ -67,7 +76,7 @@ class Controller:
 	def get_partial_grid(self, matrix = None, width = None, height = None, disp_mode = None):
 		width = self.game_width if width == None else width
 		height = self.game_height if height == None else height
-		disp_mode = self.display_mode if disp_mode == None else disp_mode	
+		disp_mode = self.display_mode if disp_mode == None else disp_mode
 		matrix = self.game_matrix if matrix == None else matrix
 
 		n_width = width
@@ -99,6 +108,9 @@ class Controller:
 			matrix = n_matrix
 		return matrix
 
+	def get_color():
+		return (self.red << 16) | (self.green << 8) | self.blue
+
 
 	def draw_grid(self, n_win = None, matrix = None, width = None, height = None):
 		width = self.get_partial_game_width() if width == None else width
@@ -116,37 +128,37 @@ class Controller:
 			if count % height == 0:
 				n_win.addch('\n')
 		n_win.refresh()
-			
+
 	def calc_grid(self, matrix, width = None, height = None):
 		width = self.game_width if width == None else width
 		height = self.game_height if height == None else height
-		
-		ret_mat = list(matrix) 
+
+		ret_mat = list(matrix)
 
 		for i in range(width * height):
-			
+
 			n_cells = 0
-			
+
 			# check top neighbor
 			if int(i / height) > 0:
 				if matrix[int(((i / height - 1) * height) + (i % height))] == 1:
 					n_cells += 1
-				
+
 				# check top left neighbor
 				if int(i % height) > 0 and matrix[int(((i / height - 1) * height) + ((i % height) - 1))] == 1:
-					n_cells += 1	
+					n_cells += 1
 				# check top right neighbor
 				if int(i % height) < width - 1 and matrix[int(((i / height - 1) * height) + ((i % height) + 1))] == 1:
 					n_cells += 1
-							
+
 			# check bottom neighbor
 			if int(i / height) < width - 1:
 				if matrix[int(((i / height + 1) * height) + (i % height))] == 1:
 					n_cells += 1
-				
+
 				# check bottom left neighbor
 				if int(i % height) > 0 and matrix[int(((i / height + 1) * height) + ((i % height) - 1))] == 1:
-					n_cells += 1			
+					n_cells += 1
 				# check bottom right neighbor
 				if int(i % height) < height - 1 and matrix[int(((i / height + 1) * height) + ((i % height) + 1))] == 1:
 					n_cells += 1
@@ -154,7 +166,7 @@ class Controller:
 			# check left neighbor
 			if int(i % height) > 0:
 				if matrix[int((i / height * height) + ((i % height) - 1))] == 1:
-					n_cells += 1	
+					n_cells += 1
 			# check right neighbor
 			if int(i % height) < height - 1:
 				if matrix[int((i / height * height) + ((i % height) + 1))] == 1:
@@ -170,6 +182,9 @@ class Controller:
 
 	def get_game_data(self):
 		game_data = ""
+		game_data += "{0:#0{1}x}".format(self.red,4)
+		game_data += "{0:#0{1}x}".format(self.blue,4)
+		game_data += "{0:#0{1}x}".format(self.green,4)
 		for i in self.game_matrix:
 			game_data += str(i)
 		return game_data
@@ -188,13 +203,13 @@ class Controller:
 		curses.endwin()
 
 def main():
-	
+
 	controller = Controller(16, 16)
 	m_game = controller.init_mat()
-	
+
 	controller.init_curses()
 
-	disp_opt = controller.DISPLAY_ALL	
+	disp_opt = controller.DISPLAY_ALL
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "--tl":
 			disp_opt = controller.DISPLAY_TL
@@ -205,7 +220,7 @@ def main():
 		if sys.argv[1] == "--br":
 			disp_opt = controller.DISPLAY_BR
 	controller.set_display_mode(disp_opt)
-	
+
 	while(True):
 		m_game = controller.calc_grid(m_game)
 		controller.set_game_matrix(m_game)

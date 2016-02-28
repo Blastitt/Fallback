@@ -8,20 +8,20 @@ class Lights():
 
 	def __init__(self):
 
-		# self.color = color
-		
+		self.color = 0x100010
+
 		# LED configuration
-		self.LED_CHANNEL 		= 0  	
-		self.LED_COUNT 			= 64 		# LEDs to light
-		self.LED_FREQ_HZ 		= 800000 	# Frequency of LED signal (800khz | 400khz)
-		self.LED_DMA_NUM 		= 5 		# DMA channel to use (0 - 14)
-		self.LED_GPIO 			= 18 		# Pin connected to the signal line (PWM)
-		self.LED_BRIGHTNESS 	= 200 		# 0 is dark, 255 is hella bright nigga
-		self.LED_INVERT 		= 0 		# 1 inverts LED signal
+		self.LED_CHANNEL		= 0
+		self.LED_COUNT			= 64		# LEDs to light
+		self.LED_FREQ_HZ		= 800000	# Frequency of LED signal (800khz | 400khz)
+		self.LED_DMA_NUM		= 5		# DMA channel to use (0 - 14)
+		self.LED_GPIO			= 18		# Pin connected to the signal line (PWM)
+		self.LED_BRIGHTNESS	= 200		# 0 is dark, 255 is hella bright nigga
+		self.LED_INVERT			= 0		# 1 inverts LED signal
 
 		# Define colors to be used (unsigned 32-bit int value
 		self.DOT_COLORS = [
-			0x100010 	# purple
+			0x100010	# purple
 		]
 
 		# Create struct from LED configuration
@@ -73,7 +73,6 @@ class Lights():
 		# Wrap following code in a try/finally to ensure cleanup functions are called
 		# after library is initialized.
 		offset = 0
-		color = self.DOT_COLORS[0]
 		for i in range(len(matrix)):
 			#i is the led number; not matrix number
 			# Set the LED color buffer value.
@@ -83,10 +82,10 @@ class Lights():
 			else:
 				matrix_val = matrix[i]
 			if matrix_val == 1:
-				ws.ws2811_led_set(self.channel, i, color)
+				ws.ws2811_led_set(self.channel, i, self.color)
 			else:
 				ws.ws2811_led_set(self.channel, i, 0x000000)
-				
+
 		# Send the LED color data to the hardware.
 		self.resp = ws.ws2811_render(self.leds)
 		if self.resp != 0:
@@ -99,4 +98,5 @@ class Lights():
 	def change_color(self, color):
 
 		# color is an INT representing a color (you choose which int corresponds to which color)
+		self.color = color
 		return 0

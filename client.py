@@ -13,17 +13,17 @@ class Client():
 		self.data = None
 		self.gamecontroller = None
 		self.current_state = None
-		
+
 		try:
 			self.lights = visuals.Lights()
 		except Exception:
 			print "self lights equals None"
 			self.lights = None
-		
+
 	def signal_handler(self, signal, frame):
 		self.lights.set_lights_off()
 		sys.exit(0)
-		
+
 	def connect(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -54,12 +54,14 @@ class Client():
 
 	def process(self):
 		#Process and send new board layout to LEDs
-		#self.color = int(self.data[:8])
-		#self.current_state = [int(x) for x in self.data[8:]]
-		
-		self.current_state = [int(x) for x in self.data]	
+		self.color_str = self.data[:12]
+		self.gamecontroller.set_colors(self.color_str)
+		self.data = self.data[12:]
+
+		self.current_state = [int(x) for x in self.data]
 		self.gamecontroller.set_game_matrix(self.current_state)
 		self.gamecontroller.n_win.clear()
+
 		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
 		self.gamecontroller.n_win.refresh()
 		self.update_lights()
@@ -67,7 +69,8 @@ class Client():
 	def update_lights(self):
 		# read /tmp/fallback.pid. if it has a p_id, check if p active
 		# if p not active replace with own, if active, keep trying
-		# self.lights.update(self.gamecontroller.get_partial_grid())
+		self.lights.change_color(self.gamecontroller.get_color())
+		self.lights.update(self.gamecontroller.get_partial_grid())
 		return 0
 
 	def close(self):
