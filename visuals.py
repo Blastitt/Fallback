@@ -63,6 +63,8 @@ class Lights():
 		for i in range(self.LED_COUNT):
 			ws.ws2811_led_set(self.channel, i, 0x000000)
 
+		self.resp = ws.ws2811_render(self.leds)
+
 	def update(self, matrix):
 
 		if len(matrix) > self.LED_COUNT:
