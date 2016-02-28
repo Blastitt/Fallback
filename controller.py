@@ -121,7 +121,7 @@ class Controller:
 		width = self.game_width if width == None else width
 		height = self.game_height if height == None else height
 		
-		ret_mat = list(matrix) 
+		#ret_mat = list(matrix) 
 
 		for i in range(width * height):
 			
@@ -162,11 +162,11 @@ class Controller:
 
 
 			if matrix[i] == 0 and n_cells == 3:
-				ret_mat[i] = 1
+				matrix[i] = 1
 			if n_cells < 2 or n_cells > 3:
-				ret_mat[i] = 0
+				matrix[i] = 0
 
-		return ret_mat
+		return matrix
 
 	def get_game_data(self):
 		game_data = ""
