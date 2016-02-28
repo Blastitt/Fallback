@@ -1,4 +1,4 @@
-#!/usr/local/env python
+#!/usr/bin/env python
 
 import random as rand
 import curses
