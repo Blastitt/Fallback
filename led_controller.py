@@ -14,7 +14,7 @@ class Led:
 		self.LED_FREQ_HZ 		= 800000 	# Frequency of LED signal (800khz | 400khz)
 		self.LED_DMA_NUM 		= 5 		# DMA channel to use (0 - 14)
 		self.LED_GPIO 			= 18 		# Pin connected to the signal line (PWM)
-		self.LED_BRIGHTNESS 	= 128 		# 0 is dark, 255 is hella bright nigga
+		self.LED_BRIGHTNESS 	= 200 		# 0 is dark, 255 is hella bright nigga
 		self.LED_INVERT 		= 0 		# 1 inverts LED signal
 
 		# Define colors to be used (unsigned 32-bit int value
