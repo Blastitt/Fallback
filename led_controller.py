@@ -58,20 +58,16 @@ class Led:
 		# after library is initialized.
 		try:
 			offset = 0
-			while True:
-				color = self.DOT_COLORS[0]
-				for i in range(len(matrix)):
-					# Set the LED color buffer value.
-					if matrix[i] == 1:
-						ws.ws2811_led_set(self.channel, i, color)
-
-				# Send the LED color data to the hardware.
-				self.resp = ws.ws2811_render(self.leds)
-				if self.resp != 0:
-					raise RuntimeError('ws2811_render failed with code {0}'.format(self.resp))
-
-				# Delay for a small period of time.
-				time.sleep(0.25)
+			color = self.DOT_COLORS[0]
+			for i in range(len(matrix)):
+				# Set the LED color buffer value.
+				if matrix[i] == 1:
+					ws.ws2811_led_set(self.channel, i, color)
+					
+			# Send the LED color data to the hardware.
+			self.resp = ws.ws2811_render(self.leds)
+			if self.resp != 0:
+				raise RuntimeError('ws2811_render failed with code {0}'.format(self.resp))
 
 		finally:
 			# set all lights to off
