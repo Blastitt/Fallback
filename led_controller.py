@@ -47,7 +47,7 @@ class Led:
 		# Initialize library with LED configuration.
 		self.resp = ws.ws2811_init(self.leds)
 		if self.resp != 0:
-		raise RuntimeError('ws2811_init failed with code {0}'.format(resp))
+		raise RuntimeError('ws2811_init failed with code {0}'.format(self.resp))
 
 	def do_light(self):
 
@@ -74,3 +74,6 @@ class Led:
 			# Example of calling delete function to clean up structure memory.  Isn't
 			# strictly necessary at the end of the program execution here, but is good practice.
 			ws.delete_ws2811_t(self.leds)
+
+led_c = Led()
+led_c.do_light()
