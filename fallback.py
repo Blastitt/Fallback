@@ -3,6 +3,7 @@
 import server
 import client
 import controller
+import signal
 
 class Device():
 
@@ -49,6 +50,8 @@ class Device():
 
 		self.server = server.Server('', 8000, self.gamecontroller)
 		self.is_server = True
+
+		signal.signal(signal.SIGINT, self.server.signal_handler)
 
 		self.server.start()
 

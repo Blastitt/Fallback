@@ -4,6 +4,7 @@ import random as rand
 import curses
 import time
 import sys
+
 from datetime import datetime
 
 class Controller:

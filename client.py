@@ -17,6 +17,10 @@ class Client():
 
 		self.lights = visuals.Lights()
 		
+	def signal_handler(self, signal, frame):
+		self.lights.set_lights_off()
+		sys.exit(0)
+		
 	def connect(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

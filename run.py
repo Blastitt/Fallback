@@ -7,6 +7,7 @@ import random
 import time
 import thread
 import sys
+import signal
 
 # Run in a separate thread. Updates the board @ 10Hz.
 def run_controller(gamecontroller, m_game):
@@ -70,7 +71,9 @@ def main():
 			myclient = client.Client(device.get_remote_server())
 			myclient.set_game_controller(gamecontroller)
 			myclient.gamecontroller.set_display_mode(disp_opt)
-			
+
+			signal.signal(signal.SIGINT, myclient.signal_handler)
+
 			server_online = True
 
 			while(server_online):

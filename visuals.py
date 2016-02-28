@@ -51,7 +51,7 @@ class Lights():
 		if self.resp != 0:
 			raise RuntimeError('ws2811_init failed with code {0}'.format(self.resp))
 
-	def __del__(self):
+	def set_lights_off(self):
 		# set all lights to off
 		for i in range(self.LED_COUNT):
 			ws.ws2811_led_set(self.channel, i, 0x000000)

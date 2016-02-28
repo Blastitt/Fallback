@@ -8,7 +8,6 @@ import visuals
 class Server():
 
 	def __init__(self, host, port, gamecontroller):
-
 		self.host = host
 		self.port = port
 		self.connection = None
@@ -25,13 +24,16 @@ class Server():
 
 		self.subsection = None
 
+	def signal_handler(self, signal, frame):
+		self.lights.set_lights_off()
+		sys.exit(0)
+	
 	def start(self):
 		try:
 			self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			self.connection.bind((self.host, self.port))
 			self.connection.listen(5)
-
 
 		except Exception as e:
 			print("[!] Error starting server: " + str(e))
