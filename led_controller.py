@@ -27,19 +27,19 @@ class Led:
 
 		# Init all channels to off
 		for channum in range(2):
-			channel = ws.ws2811_channel_get(self.leds, channum)
-			ws.ws2811_channel_t_count_set(channel, 0)
-			ws.ws2811_channel_t_gpionum_set(channel, 0)
-			ws.ws2811_channel_t_invert_set(channel, 0)
-			ws.ws2811_channel_t_brightness_set(channel, 0)
+			self.channel = ws.ws2811_channel_get(self.leds, channum)
+			ws.ws2811_channel_t_count_set(self.channel, 0)
+			ws.ws2811_channel_t_gpionum_set(self.channel, 0)
+			ws.ws2811_channel_t_invert_set(self.channel, 0)
+			ws.ws2811_channel_t_brightness_set(self.channel, 0)
 
 
-		channel = ws.ws2811_channel_get(self.leds, self.LED_CHANNEL)
+		self.channel = ws.ws2811_channel_get(self.leds, self.LED_CHANNEL)
 
-		ws.ws2811_channel_t_count_set(channel, self.LED_COUNT)
-		ws.ws2811_channel_t_gpionum_set(channel, self.LED_GPIO)
-		ws.ws2811_channel_t_invert_set(channel, self.LED_INVERT)
-		ws.ws2811_channel_t_brightness_set(channel, self.LED_BRIGHTNESS)
+		ws.ws2811_channel_t_count_set(self.channel, self.LED_COUNT)
+		ws.ws2811_channel_t_gpionum_set(self.channel, self.LED_GPIO)
+		ws.ws2811_channel_t_invert_set(self.channel, self.LED_INVERT)
+		ws.ws2811_channel_t_brightness_set(self.channel, self.LED_BRIGHTNESS)
 
 		ws.ws2811_t_freq_set(self.leds, self.LED_FREQ_HZ)
 		ws.ws2811_t_dmanum_set(self.leds, self.LED_DMA_NUM)
@@ -58,7 +58,7 @@ class Led:
 			while True:
 				color = self.DOT_COLORS[0]
 				# Set the LED color buffer value.
-				ws.ws2811_led_set(channel, 0, color)
+				ws.ws2811_led_set(self.channel, 0, color)
 
 				# Send the LED color data to the hardware.
 				self.resp = ws.ws2811_render(self.leds)
