@@ -21,10 +21,7 @@ class Server():
 
 		self.gamecontroller = gamecontroller
 
-		try:	
-			self.lights = visuals.Lights()
-		except Exception:
-			self.lights = None
+		self.lights = visuals.Lights()
 
 		self.subsection = None
 
@@ -76,28 +73,29 @@ class Server():
 		# if p not active replace with own, if active, keep trying
 		#self.lights.update(self.gamecontroller.get_partial_grid())
 		
-		if self.lights == None:
-			return
+		#if self.lights == None:
+		#	return
 
-		try:
-			pid_valid = False
-			f = open("/tmp/fallback.pid", "w+")
-			pid = f.readline()
+		self.lights.update(self.gamecontroller.get_partial_grid())
+		#try:
+		#	pid_valid = False
+		#	f = open("/tmp/fallback.pid", "w+")
+		#	pid = f.readline()
 
-			if pid != "" and pid != str(os.getpid()) and self.process_exists(pid):
-				pid_valid = True
+		#	if pid != "" and pid != str(os.getpid()) and self.process_exists(pid):
+		#		pid_valid = True
 
-			if pid_valid:
-				f.close()
-				return
-			else:
-				f.seek(0)
-				f.write(str(os.getpid()))
-				f.close()
-				self.lights.update(self.gamecontroller.get_partial_grid())
+		#	if pid_valid:
+		#		f.close()
+		#		return
+		#	else:
+		#		f.seek(0)
+		#		f.write(str(os.getpid()))
+		#		f.close()
+		#		self.lights.update(self.gamecontroller.get_partial_grid())
 
-		except IOError as err:
-			print ("err")
+		#except IOError as err:
+		#	print ("err")
 
 def main():
 	server = Server('', 8000)

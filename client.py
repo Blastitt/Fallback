@@ -14,11 +14,7 @@ class Client():
 		self.gamecontroller = None
 		self.current_state = None
 
-		try:
-			self.lights = visuals.Lights()
-		except Exception:
-			print "self lights equals None"
-			self.lights = None
+		self.lights = visuals.Lights()
 
 	def signal_handler(self, signal, frame):
 		self.lights.set_lights_off()
