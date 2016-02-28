@@ -15,7 +15,7 @@ class Client():
 		self.gamecontroller = None
 		self.current_state = None
 
-		self.lights = visuals.Lights(0)
+		self.lights = visuals.Lights()
 		
 	def connect(self):
 		try:
@@ -54,9 +54,9 @@ class Client():
 		self.gamecontroller.n_win.clear()
 		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
 		self.gamecontroller.n_win.refresh()
+		#self.update_lights()
 
-	def update_lights(self):
-		
+	def update_lights(self):	
 		self.lights.update(self.gamecontroller.get_partial_grid())
 
 	def close(self):

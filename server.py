@@ -4,7 +4,6 @@ import socket
 import controller
 import threading
 import visuals
-import led_controller
 
 class Server():
 
@@ -22,7 +21,6 @@ class Server():
 
 		self.gamecontroller = gamecontroller
 	
-		self.leds = led_controller.Led()	
 		self.lights = visuals.Lights(0)
 
 		self.subsection = None
@@ -60,8 +58,7 @@ class Server():
 			self.update_lights()
 
 	def update_lights(self):
-		self.leds.do_light(self.gamecontroller.get_partial_grid())	
-	#	self.lights.update(self.gamecontroller.get_partial_grid())
+		self.lights.update(self.gamecontroller.get_partial_grid())
 
 
 def main():
