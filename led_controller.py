@@ -49,6 +49,17 @@ class Led:
 		if self.resp != 0:
 			raise RuntimeError('ws2811_init failed with code {0}'.format(self.resp))
 
+	def __del__(self):
+		# set all lights to off
+		for i in range(self.LED_COUNT):
+			ws.ws2811_led_set(self.channel, i, 0x000000)
+
+		# Ensure ws2811_fini is called before the program quits.
+		ws.ws2811_fini(self.leds)
+		# Example of calling delete function to clean up structure memory.  Isn't
+		# strictly necessary at the end of the program execution here, but is good practice.
+		ws.delete_ws2811_t(self.leds)
+
 	def do_light(self, matrix):
 
 		if len(matrix) > self.LED_COUNT:
@@ -56,28 +67,19 @@ class Led:
 
 		# Wrap following code in a try/finally to ensure cleanup functions are called
 		# after library is initialized.
-		try:
-			offset = 0
-			color = self.DOT_COLORS[0]
-			for i in range(len(matrix)):
-				# Set the LED color buffer value.
-				if matrix[i] == 1:
-					ws.ws2811_led_set(self.channel, i, color)
-					
-			# Send the LED color data to the hardware.
-			self.resp = ws.ws2811_render(self.leds)
-			if self.resp != 0:
-				raise RuntimeError('ws2811_render failed with code {0}'.format(self.resp))
-
-		finally:
-			# set all lights to off
-			for i in range(self.LED_COUNT):
+		offset = 0
+		color = self.DOT_COLORS[0]
+		for i in range(len(matrix)):
+			# Set the LED color buffer value.
+			if matrix[i] == 1:
+				ws.ws2811_led_set(self.channel, i, color)
+			else:
 				ws.ws2811_led_set(self.channel, i, 0x000000)
+				
+		# Send the LED color data to the hardware.
+		self.resp = ws.ws2811_render(self.leds)
+		if self.resp != 0:
+			raise RuntimeError('ws2811_render failed with code {0}'.format(self.resp))
 
-			# Ensure ws2811_fini is called before the program quits.
-			ws.ws2811_fini(self.leds)
-			# Example of calling delete function to clean up structure memory.  Isn't
-			# strictly necessary at the end of the program execution here, but is good practice.
-			ws.delete_ws2811_t(self.leds)
 
 
