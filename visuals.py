@@ -51,16 +51,17 @@ class Lights():
 		if self.resp != 0:
 			raise RuntimeError('ws2811_init failed with code {0}'.format(self.resp))
 
-	def set_lights_off(self):
-		# set all lights to off
-		for i in range(self.LED_COUNT):
-			ws.ws2811_led_set(self.channel, i, 0x000000)
-
+	def __del__(self):
 		# Ensure ws2811_fini is called before the program quits.
 		ws.ws2811_fini(self.leds)
 		# Example of calling delete function to clean up structure memory.  Isn't
 		# strictly necessary at the end of the program execution here, but is good practice.
 		ws.delete_ws2811_t(self.leds)
+
+	def set_lights_off(self):
+		# set all lights to off
+		for i in range(self.LED_COUNT):
+			ws.ws2811_led_set(self.channel, i, 0x000000)
 
 	def update(self, matrix):
 

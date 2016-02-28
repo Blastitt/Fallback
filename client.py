@@ -7,7 +7,6 @@ import visuals
 class Client():
 
 	def __init__(self, server):
-
 		self.server = server
 		self.connection = None
 
@@ -47,7 +46,6 @@ class Client():
 			print("[!] Error receiving data from server: " + str(e))
 
 	def get_state(self):
-
 		return self.current_state
 
 	def process(self):
