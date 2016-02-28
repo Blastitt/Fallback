@@ -47,7 +47,7 @@ class Led:
 		# Initialize library with LED configuration.
 		self.resp = ws.ws2811_init(self.leds)
 		if self.resp != 0:
-		raise RuntimeError('ws2811_init failed with code {0}'.format(self.resp))
+			raise RuntimeError('ws2811_init failed with code {0}'.format(self.resp))
 
 	def do_light(self):
 
