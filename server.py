@@ -21,7 +21,7 @@ class Server():
 
 		self.gamecontroller = gamecontroller
 	
-		self.lights = visuals.Lights(0)
+		self.lights = visuals.Lights()
 
 		self.subsection = None
 
