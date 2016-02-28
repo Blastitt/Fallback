@@ -63,6 +63,8 @@ class Server():
 	def update_lights(self):
 		# read /tmp/fallback.pid. if it has a p_id, check if p active
 		# if p not active replace with own, if active, keep trying
+		self.lights.update(self.gamecontroller.get_partial_grid())
+		'''
 		try:
 			busy = False
 			f = open("/tmp/fallback.pid", "w+")
@@ -78,7 +80,7 @@ class Server():
 			f.close()
 		except IOError as err:
 			print ("err")
-
+		'''
 
 def main():
 	server = Server('', 8000)
