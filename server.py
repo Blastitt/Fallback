@@ -20,8 +20,11 @@ class Server():
 		self.update_msg = None
 
 		self.gamecontroller = gamecontroller
-	
-		self.lights = visuals.Lights()
+
+		try:	
+			self.lights = visuals.Lights()
+		except Exception:
+			self.lights = None
 
 		self.subsection = None
 
@@ -60,27 +63,41 @@ class Server():
 			self.client.close()
 			self.update_lights()
 
+	def process_exists(pid_str):
+		try:
+			os.kill(int(pid_str), 0)
+		except OSError:
+			return False
+		else:
+			return True		
+
 	def update_lights(self):
 		# read /tmp/fallback.pid. if it has a p_id, check if p active
 		# if p not active replace with own, if active, keep trying
-		self.lights.update(self.gamecontroller.get_partial_grid())
-		'''
-		try:
-			busy = False
-			f = open("/tmp/fallback.pid", "w+")
-			if f.readline() != "":
-				busy = True
+		#self.lights.update(self.gamecontroller.get_partial_grid())
+		
+		if self.lights == None:
+			return
 
-			if busy:
-				sleep(0.5)
-				self.update_lights()
+		try:
+			pid_valid = False
+			f = open("/tmp/fallback.pid", "w+")
+			pid = f.readline()
+
+			if pid != "" and pid != str(os.getpid()) and self.process_exists(pid):
+				pid_valid = True
+
+			if pid_valid:
+				f.close()
+				return
 			else:
+				f.seek(0)
 				f.write(str(os.getpid()))
+				f.close()
 				self.lights.update(self.gamecontroller.get_partial_grid())
-			f.close()
+
 		except IOError as err:
 			print ("err")
-		'''
 
 def main():
 	server = Server('', 8000)
