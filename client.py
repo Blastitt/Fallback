@@ -51,7 +51,7 @@ class Client():
 	def process(self):
 		#Process and send new board layout to LEDs
 		#self.color = int(self.data[:8])
-		self.current_state = [int(x) for x in self.data[8:]]
+		#self.current_state = [int(x) for x in self.data[8:]]
 		
 		self.gamecontroller.set_game_matrix(self.current_state)
 		self.gamecontroller.n_win.clear()
