@@ -66,7 +66,7 @@ class Server():
 		try:
 			busy = False
 			f = open("/tmp/fallback.pid", "w+")
-			if file.readline() != "":
+			if f.readline() != "":
 				busy = True
 
 			if busy:
@@ -75,6 +75,7 @@ class Server():
 			else:
 				f.write(str(os.getpid()))
 				self.lights.update(self.gamecontroller.get_partial_grid())
+			f.close()
 		except IOError as err:
 			print ("err")
 
