@@ -74,7 +74,7 @@ class Led:
 			# Set the LED color buffer value.
 			#i/8%2==1
 			if (i / 8) % 2 == 1:
-				matrix_val = matrix[8 - (i % 8) + (i / 8)]
+				matrix_val = matrix[8 - (i % 8) + int(i / 8) * 8]
 			else:
 				matrix_val = matrix[i]
 			if matrix_val == 1:
