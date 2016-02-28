@@ -53,6 +53,7 @@ class Client():
 		#self.color = int(self.data[:8])
 		#self.current_state = [int(x) for x in self.data[8:]]
 		
+		self.current_state = [int(x) for x in self.data]	
 		self.gamecontroller.set_game_matrix(self.current_state)
 		self.gamecontroller.n_win.clear()
 		self.gamecontroller.draw_grid(None, self.gamecontroller.get_partial_grid())
